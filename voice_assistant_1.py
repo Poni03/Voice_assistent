@@ -8,47 +8,9 @@ import random
 import webbrowser
 import text_to_speech
 import g4f
+import lists_word
 
 
-number_random1 = random.randint(0, 2)
-number_random2 = random.randint(0, 3)
-number_random3 = random.randint(0, 3)
-number_random = random.randint(0, 15) 
-
-lists = ['Рожденный ползать упасть не может',
-'Быстро и дешево выполню любую халтуру!',
-'Ты же командир! Не делай умное лицо!',
-'Пусть меня воспитали люди, но я не глупец!',
-'Хочешь устроить Конец Света? Нажми кнопку «Reset».',
-'Я расскажу тебе множество тайн, а потом убью тебя!',
-'Сгинь нечистая сила, останься чистый спирт!',
-'Не гнев правит мной, а я гневом! Чего и вам желаю',
-'Властители тьмы делают «это» в темноте.',
-'Не оскверняй моё лицо своим курсором!',
-'Да повелитель?',
-'Да?',
-'Чего желает мой повелитель?',
-'ЭЭЭ?',
-'А?',
-'Че?']
-lists_1 = ['Я так понял: ','Услышал: ','Распознано: ']
-lists_2 = ['Я нихуя не понял','Что?','ты о чем?','не понял']
-lists_3 = ['Неизвестная ошибка проверьте интернет','Неизвестная ошибка проверьте интернет','Неизвестная ошибка скинь денег','я устал']
-
-
-opts = {
-	"alias": ('неро','нероо','ннеерроо','ннеро','нерро','неероооо,','нэрра'
-				'нерий','нера','нэрроа', 'nero', 'нейрон'),
-	"tbr": ('скажи','расскажи','покажи','сколько','произнеси'),
-	"cmds": {
-		"ctime": ('текущее время','сейчас времени','который час','удыы бэна','удыыы болжэ бэна'),
-		"radio": ('включи youtube','возпроизведи ютуб','открой youtube',),
-		"joke": ('расскажи анекдот','рассмещи меня','скажи анектод','расскажи топ цитату','цитата')
-			}
-}
-
-
-# def
 def speak(what):
 	print(what)
 	tts = pyttsx3.init()
@@ -75,10 +37,10 @@ def speak(what):
 def callback(recognizer, audio):
 	try:
 		voice = recognizer.recognize_google(audio, language="ru-RU").lower()
-		print( '[log]', lists_1[number_random1] + voice)
+		print( '[log]', lists_word.lists_1[random.randint(0, 2)] + voice)
 		gpt(voice)
 
-		if voice.startswith(opts["alias"]):
+		if voice.startswith(lists_word.opts["alias"]):
 			cmd = voice
 			for x in opts["alias"]:
 				cmd = cmd.replace(x, '').strip()
@@ -92,9 +54,9 @@ def callback(recognizer, audio):
 
 
 	except sr.UnknownValueError:
-		print(lists_2[number_random2])
+		print(lists_word.lists_2[random.randint(0, 3)])
 	except sr.RequestError as e:
-		print(lists_3[number_random3])
+		print(lists_word.lists_3[random.randint(0, 3)])
 
 def recognize_cmd(cmd):
 	RC = {'cmd': '', 'percent': 0 }
@@ -118,14 +80,9 @@ def execute_cmd(cmd):
 		webbrowser.open('https://www.youtube.com')
 
 	elif cmd in 'joke':
-		speak('''Мужик молится:
-				- Сам я несчастный, дети мои несчастные, народ мой несчастный!
-				Бог ему:
-				- Не ной!
-				Мужик:
-				- Правильно, я не Ной, я Моисей!''')
+		speak(lists_word.JOKE)
 	else:
-		print(lists_3[number_random3])
+		print(lists_word.lists_3[number_random3])
 
 
 def gpt(voice):
@@ -160,7 +117,7 @@ with m as source:
 	r.adjust_for_ambient_noise(source)	
 
 
-speak(lists[number_random])
+speak(lists_word.lists[random.randint(0, 15)])
 speak('Я вас слушаю')
 
 
